@@ -1,0 +1,9 @@
+#!/bin/bash
+if [ $# -eq 0 ]
+  then
+    echo "Please provide the specific date in the format 'YYYY-MM-DD'"
+    exit 1
+fi
+specific_date="$1"
+instance_ids=$(jq -r --arg sdate "$specific_date" '.Reservations[].Instances[] | select(.LaunchTime < ($sdate + "T00:00:00Z")) | .InstanceId' instances.json)
+echo "$instance_ids"
